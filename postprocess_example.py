@@ -14,8 +14,8 @@ if __name__ == '__main__':
 
     # remove menu and indicators
     data = np.array(img)
-    menu_is_open = (data[52:58, 52:58] == 0).all()
-    if menu_is_open:
+    menu_is_open = (data[40:1815, 40:1815] == 0).all()
+    if not menu_is_open:
         # remove the entire menu, and the x in the top right corner
         data[:, :120, :] = 255
         data[40:81, 1324:1364, :] = 255
@@ -27,11 +27,19 @@ if __name__ == '__main__':
     img = Image.fromarray(data).convert("RGB")
     bbox = ImageOps.invert(img).getbbox()
     img = img.crop(bbox)
+    img=ImageOps.invert(img)
 
     # set alpha channel
-    data = np.array(img.convert("RGBA"))
-    # copy inverted red channel to alpha channel, so that the background is transparent
-    # (could have also used blue or green here, doesn't matter)
-    data[..., -1] = 255 - data[..., 0]
-    img = Image.fromarray(data)
+
+    img= img.convert("RGBA")
+    datas=img.getdata()
+
+    newData = []
+    for item in datas:
+        if item[0] == 0 and item[1] == 0 and item[2] == 0:
+            newData.append((255, 255, 255, 0))
+        else:
+            newData.append(item)
+
+    img.putdata(newData)
     img.save(path)
