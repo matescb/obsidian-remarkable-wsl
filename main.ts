@@ -112,21 +112,22 @@ export default class MyPlugin extends Plugin {
         });
     }
 
-    async callReSnap(landscape: boolean) {
-        const { reSnapPath, rmAddress } = this.settings;
-        const { spawn } = require('child_process');
+	async callReSnap(landscape: boolean) {
+		const { reSnapPath, rmAddress } = this.settings;
+		const { spawn } = require('child_process');
 
-        let vaultAbsPath;
-        const adapter = this.app.vault.adapter;
-        if (adapter instanceof FileSystemAdapter) {
-            vaultAbsPath = adapter.getBasePath();
-        }
-        else {
-            // Not on desktop, thus there is no basePath available. Cancel execution.
-            new Notice('Could not get vault path! Is this running on mobile...?');
-            return;
-        }
+		let vaultAbsPath;
+		const adapter = this.app.vault.adapter;
+		if (adapter instanceof FileSystemAdapter) {
+		    vaultAbsPath = adapter.getBasePath();
+		}
+		else {
+		    // Not on desktop, thus there is no basePath available. Cancel execution.
+		    new Notice('Could not get vault path! Is this running on mobile...?');
+		    return;
+		}
 
+<<<<<<< HEAD
         const now = moment();
         const drawingFileName = `rM drawing ${now.format("YYYY-MM-DD-HH.mm.ss")}.png`;
         const absOutputFolderPath = adapter.getFullRealPath(this.settings.outputPath);
@@ -142,14 +143,31 @@ export default class MyPlugin extends Plugin {
         const { stderr, stdout } = await this.runProcess("bash", args);
         return { drawingFilePath, drawingFileName };
     }
+=======
+		const now = moment();
+		const drawingFileName = `rM drawing ${now.format("YYYY-MM-DD-HH.mm.ss")}.png`;
+		const absOutputFolderPath = adapter.getFullRealPath(this.settings.outputPath);
+		const absOutputFolderPath_linux= absOutputFolderPath.replace(/(^[a-zA-Z]):(.*)/, '/mnt/d$2');
+		const drawingFilePath_linux = path.join(absOutputFolderPath_linux, drawingFileName).replace(/\\/g, '/');
+		const drawingFilePath = path.join(absOutputFolderPath, drawingFileName);
 
-    async postprocessDrawing(drawingFilePath: string) {
-        const { postprocessor } = this.settings;
-        if (postprocessor) {
-            const args = [drawingFilePath];
-            const { stderr, stdout } = await this.runProcess(postprocessor, args);
-        }
-        return true;
+		let args = [reSnapPath,'-o', drawingFilePath, '-s', rmAddress];
+		if(landscape) {
+		    args = args.concat(['-l']);
+		}
+
+		const { stderr, stdout } = await this.runProcess("bash", args);
+		return { drawingFilePath, drawingFileName };
+	    }
+>>>>>>> 58358f9891caf77f21d91cdc7682453bd08839da
+
+	    async postprocessDrawing(drawingFilePath: string) {
+		const { postprocessor } = this.settings;
+		if (postprocessor) {
+		    const args = [drawingFilePath];
+		    const { stderr, stdout } = await this.runProcess(postprocessor, args);
+		}
+		return true;
     }
 
     async tryInsertingDrawing(landscape: boolean) {
