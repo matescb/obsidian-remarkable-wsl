@@ -1,5 +1,5 @@
-##
-With this fork, you can use reSnap executable inside wsl. In my case its `/mnt/e/WORK/ReMarkable/reSnap/reSnap.sh` 
+## Purpose of fork
+With this fork, you can run Obsidian under Windows and use reSnap executable inside wsl. In my case its `/mnt/e/WORK/ReMarkable/reSnap/reSnap.sh` 
 
 ## Obsidian & reMarkable
 
