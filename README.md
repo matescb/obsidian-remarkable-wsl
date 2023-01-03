@@ -1,3 +1,6 @@
+##
+With this fork, you can use reSnap executable inside wsl. In my case its `/mnt/e/WORK/ReMarkable/reSnap/reSnap.sh` 
+
 ## Obsidian & reMarkable
 
 This a plugin integrating the [reMarkable](https://remarkable.com) paper tablet with the note-taking software [Obsidian](https://obsidian.md). More specifically, it takes a screenshot from your reMarkable (via USB or WiFi, however you prefer), saves it as a .png files in your Vault, optionally post-processes it, and inserts the image in your currently open note.

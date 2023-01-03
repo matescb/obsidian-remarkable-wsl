@@ -130,14 +130,16 @@ export default class MyPlugin extends Plugin {
         const now = moment();
         const drawingFileName = `rM drawing ${now.format("YYYY-MM-DD-HH.mm.ss")}.png`;
         const absOutputFolderPath = adapter.getFullRealPath(this.settings.outputPath);
+        const absOutputFolderPath_linux= absOutputFolderPath.replace(/(^[a-zA-Z]):(.*)/, '/mnt/d$2');
+        const drawingFilePath_linux = path.join(absOutputFolderPath_linux, drawingFileName).replace(/\\/g, '/');
         const drawingFilePath = path.join(absOutputFolderPath, drawingFileName);
 
-        let args = ['-o', drawingFilePath, '-s', rmAddress];
+        let args = [reSnapPath,'-o', drawingFilePath_linux, '-s', rmAddress];
         if(landscape) {
             args = args.concat(['-l']);
         }
 
-        const { stderr, stdout } = await this.runProcess(reSnapPath, args);
+        const { stderr, stdout } = await this.runProcess("bash", args);
         return { drawingFilePath, drawingFileName };
     }
 
